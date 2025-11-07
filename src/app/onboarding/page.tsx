@@ -2,6 +2,7 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import ChevronRight from "@mui/icons-material/ChevronRight";
+import Link from "next/link";
 
 export default function OnboardingWelcome() {
   return (
@@ -20,14 +21,16 @@ export default function OnboardingWelcome() {
           DOOR 2 DOOR
         </Typography>
       </Typography>
-      <Button
-        size="large"
-        color="primary"
-        variant="outlined"
-        endIcon={<ChevronRight />}
-      >
-        Get Started
-      </Button>
+      <Link href="/onboarding/name">
+        <Button
+          size="large"
+          color="primary"
+          variant="outlined"
+          endIcon={<ChevronRight />}
+        >
+          Get Started
+        </Button>
+      </Link>
     </Box>
   );
 }
