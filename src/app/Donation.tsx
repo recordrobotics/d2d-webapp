@@ -1,3 +1,5 @@
+"use client";
+
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import { Donation } from "@/lib/donation";
@@ -6,6 +8,7 @@ import Link from "next/link";
 
 export default function DonationItem({ donation }: { donation: Donation }) {
   const format = useFormatter();
+  const clientTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
   return (
     <Link href={`/donation/edit#${donation.id}`}>
@@ -47,6 +50,7 @@ export default function DonationItem({ donation }: { donation: Donation }) {
             day: "numeric",
             hour: "numeric",
             minute: "2-digit",
+            timeZone: clientTimeZone,
           })}
         </Typography>
       </Box>

@@ -1,3 +1,5 @@
+"use client";
+
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
@@ -15,6 +17,7 @@ export default function UserStatus({
   lastSyncTime?: number;
 }) {
   const format = useFormatter();
+  const clientTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
   return (
     <Box
@@ -100,6 +103,7 @@ export default function UserStatus({
                 year: "numeric",
                 hour: "numeric",
                 minute: "2-digit",
+                timeZone: clientTimeZone,
               })
             : "Never"}
         </Typography>

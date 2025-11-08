@@ -105,6 +105,10 @@ export default function DonationForm({
               variant="standard"
               size="medium"
               label="Street name"
+              helperText="Include street type (Street, Avenue, etc.)"
+              sx={{
+                mb: "-27px",
+              }}
               autoComplete="off"
               fullWidth
               value={streetNameValue}
