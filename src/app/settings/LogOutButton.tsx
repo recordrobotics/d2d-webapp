@@ -2,7 +2,6 @@
 
 import Button from "@mui/material/Button";
 import Logout from "@mui/icons-material/Logout";
-import { deleteCookie } from "cookies-next";
 import { useRouter } from "next/navigation";
 import { db } from "@/lib/donation";
 
@@ -16,7 +15,7 @@ export default function LogOutButton() {
       variant="outlined"
       startIcon={<Logout />}
       onClick={async () => {
-        deleteCookie("onboardingComplete");
+        await db.settings.delete("onboardingComplete");
         await db.donations.clear();
         router.push("/onboarding");
       }}

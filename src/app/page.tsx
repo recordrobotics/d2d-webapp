@@ -9,7 +9,6 @@ import Link from "next/link";
 import { useLiveQuery } from "dexie-react-hooks";
 import { db, DonationId } from "@/lib/donation";
 import DonationItem from "./Donation";
-import { getCookie } from "cookies-next";
 import { useRouter } from "next/navigation";
 import {
   SwipeableList,
@@ -20,7 +19,7 @@ import {
 import "react-swipeable-list/dist/styles.css";
 import donationlistStyles from "./donationlist.module.css";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import DonationDeleteAlert from "./DonationDeleteAlert";
 import sleep from "sleep-promise";
 
@@ -45,12 +44,14 @@ export default function Home() {
   const userName = useLiveQuery(() => db.settings.get("user.name"), []);
 
   const router = useRouter();
-  if (
-    typeof location === "object" &&
-    getCookie("onboardingComplete") !== "true"
-  ) {
-    router.replace("/onboarding");
-  }
+
+  useEffect(() => {
+    (async () => {
+      if ((await db.settings.get("onboardingComplete"))?.value !== "true") {
+        router.replace("/onboarding");
+      }
+    })();
+  }, [router]);
 
   const { map: alignLeftMap, setItem: setAlignLeftMap } =
     usePerItemMap<boolean>();

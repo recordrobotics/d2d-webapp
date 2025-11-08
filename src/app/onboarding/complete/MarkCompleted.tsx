@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import { setCookie } from "cookies-next";
+import { db } from "@/lib/donation";
 
 export default function MarkOnboardingComplete() {
   const hasSetCookie = useRef(false as boolean);
@@ -9,11 +9,9 @@ export default function MarkOnboardingComplete() {
   useEffect(() => {
     if (hasSetCookie.current) return;
     hasSetCookie.current = true;
-
-    setCookie("onboardingComplete", "true", {
-      path: "/",
-      sameSite: "lax",
-    });
+    (async () => {
+      await db.settings.put({ key: "onboardingComplete", value: "true" });
+    })();
   }, []);
 
   return null;

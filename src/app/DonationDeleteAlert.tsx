@@ -36,7 +36,7 @@ export default function DonationDeleteAlert({
           autoFocus
           variant="contained"
         >
-          delete it!
+          Delete it!
         </Button>
       </DialogActions>
     </Dialog>
