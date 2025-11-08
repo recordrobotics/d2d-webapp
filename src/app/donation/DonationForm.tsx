@@ -43,6 +43,7 @@ export default function DonationForm({
               variant="standard"
               size="medium"
               label="Street number"
+              inputMode="numeric"
               autoComplete="off"
             />
             <TextField
