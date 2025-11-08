@@ -14,6 +14,7 @@ import PaypalIcon from "./PayPalIcon";
 import Button from "@mui/material/Button";
 import { db, createDonationId, DonationId } from "@/lib/donation";
 import { useRouter } from "next/navigation";
+import DonationDeleteAlert from "../DonationDeleteAlert";
 
 const paymentOptions = [
   { label: "Cash", value: "cash", icon: <LocalAtmIcon fontSize="small" /> },
@@ -41,6 +42,8 @@ export default function DonationForm({
   const [donorNameValue, setDonorNameValue] = useState("");
   const [donorEmailValue, setDonorEmailValue] = useState("");
   const [paymentTypeValue, setPaymentTypeValue] = useState("");
+
+  const [openDeleteAlert, setOpenDeleteAlert] = useState(false);
 
   const router = useRouter();
 
@@ -202,13 +205,7 @@ export default function DonationForm({
             color="error"
             variant="outlined"
             startIcon={<DeleteIcon />}
-            onClick={async () => {
-              // Delete donation
-              const id = window.location.hash.substring(1);
-              await db.donations.delete(id);
-              // Redirect to home page
-              router.push("/");
-            }}
+            onClick={() => setOpenDeleteAlert(true)}
           >
             Delete
           </Button>
@@ -288,6 +285,19 @@ export default function DonationForm({
           {newDonation ? "Submit" : "Save"}
         </Button>
       </Box>
+      <DonationDeleteAlert
+        open={openDeleteAlert}
+        handleResponse={async (response) => {
+          setOpenDeleteAlert(false);
+          if (response === "delete") {
+            // Delete donation
+            const id = window.location.hash.substring(1);
+            await db.donations.delete(id);
+            // Redirect to home page
+            router.push("/");
+          }
+        }}
+      />
     </>
   );
 }

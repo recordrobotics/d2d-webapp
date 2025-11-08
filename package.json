@@ -24,7 +24,8 @@
     "react-number-format": "^5.4.4",
     "dexie": "^4.2.1",
     "dexie-react-hooks": "^4.2.0",
-    "react-swipeable-list": "^1.10.0"
+    "react-swipeable-list": "^1.10.0",
+    "sleep-promise": "^9.1.0"
   },
   "devDependencies": {
     "@types/node": "^20",

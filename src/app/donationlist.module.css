@@ -19,7 +19,12 @@
 }
 
 :global(.swipeable-list-item--remove) {
-    margin-bottom: 0;
     border-width: 0;
+    max-height: 1000px !important;
     transition: max-height .35s ease-out, margin-bottom .15s ease-out .25s, border-width .15s ease-out .25s !important;
+}
+
+.removing {
+    margin-bottom: 0;
+    max-height: 0 !important;
 }
