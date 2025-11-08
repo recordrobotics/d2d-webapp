@@ -75,6 +75,9 @@ export default function DonationForm({
           customInput={TextField}
           thousandSeparator
           valueIsNumericString
+          allowNegative={false}
+          decimalScale={2}
+          fixedDecimalScale
           prefix="$"
           variant="standard"
           size="medium"
