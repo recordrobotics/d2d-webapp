@@ -8,7 +8,7 @@ export default function DonationItem({ donation }: { donation: Donation }) {
   const format = useFormatter();
 
   return (
-    <Link href={`/donation/edit?id=${donation.id}`}>
+    <Link href={`/donation/edit#${donation.id}`}>
       <Box
         display="flex"
         flexDirection="column"
