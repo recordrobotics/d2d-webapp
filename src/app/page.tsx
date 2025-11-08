@@ -7,10 +7,21 @@ import Button from "@mui/material/Button";
 import Add from "@mui/icons-material/Add";
 import PageMotion from "./PageMotion";
 import Link from "next/link";
-import { createUserId, Donation } from "@/lib/donation";
+import { useLiveQuery } from "dexie-react-hooks";
+import { db } from "@/lib/donation";
 import DonationItem from "./Donation";
+import { getCookie } from "cookies-next";
+import { useRouter } from "next/navigation";
 
 export default function Home() {
+  const donations = useLiveQuery(() => db.donations.toArray(), []);
+  const userName = useLiveQuery(() => db.settings.get("user.name"), []);
+
+  const router = useRouter();
+  if (getCookie("onboardingComplete") !== "true") {
+    router.replace("/onboarding");
+  }
+
   return (
     <PageMotion>
       <Box
@@ -36,15 +47,20 @@ export default function Home() {
           p="10px"
         >
           <Typography variant="h6" align="center">
-            Welcome, Derek
+            Welcome, {userName ? userName.value : "student"}!
             <Typography variant="body1" component="div">
-              {true
+              {donations && donations.length > 0
                 ? "You are currently offline. Publishing and fetching donations may not work."
                 : "You have no donations collected yet."}
             </Typography>
           </Typography>
           <Typography variant="h3" align="center">
-            $234.00<Typography variant="body1">Total donated</Typography>
+            {"$" +
+              (donations
+                ? donations.reduce((sum, donation) => sum + donation.amount, 0)
+                : 0
+              ).toFixed(2)}
+            <Typography variant="body1">Total donated</Typography>
           </Typography>
           <Box
             display="flex"
@@ -63,65 +79,17 @@ export default function Home() {
               </Button>
             </Link>
             <Button size="small" color="info" variant="text">
-              {true ? "Publish Donations" : "Fetch Donations"}
+              {donations && donations.length > 0
+                ? "Publish Donations"
+                : "Fetch Donations"}
             </Button>
           </Box>
         </Box>
         <Stack gap="16px" width="100%">
-          {(
-            [
-              {
-                id: createUserId(),
-                timestamp: new Date(
-                  "Wednesday, November 5, 3:30 PM"
-                ).getUTCMilliseconds(),
-                address: {
-                  streetNumber: 224,
-                  streetName: "Calvary Street",
-                  city: "Waltham",
-                },
-                amount: 100,
-                donor: {
-                  name: "Joseph",
-                  paymentType: "cash",
-                },
-              },
-              {
-                id: createUserId(),
-                timestamp: new Date(
-                  "Wednesday, November 5, 3:30 PM"
-                ).getUTCMilliseconds(),
-                address: {
-                  streetNumber: 224,
-                  streetName: "Calvary Street",
-                  city: "Waltham",
-                },
-                amount: 100,
-                donor: {
-                  name: "Joseph",
-                  paymentType: "cash",
-                },
-              },
-              {
-                id: createUserId(),
-                timestamp: new Date(
-                  "Wednesday, November 5, 3:30 PM"
-                ).getUTCMilliseconds(),
-                address: {
-                  streetNumber: 224,
-                  streetName: "Calvary Street",
-                  city: "Waltham",
-                },
-                amount: 100,
-                donor: {
-                  name: "Joseph",
-                  paymentType: "cash",
-                },
-              },
-            ] as Donation[]
-          ).map((donation) => (
-            <DonationItem key={donation.id} donation={donation} />
-          ))}
+          {donations &&
+            donations.map((donation) => (
+              <DonationItem key={donation.id} donation={donation} />
+            ))}
         </Stack>
       </Box>
     </PageMotion>

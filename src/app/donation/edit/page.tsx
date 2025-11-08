@@ -1,10 +1,42 @@
+"use client";
+
 import PageMotion from "../../PageMotion";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import DonationForm from "../DonationForm";
 import TopBar from "../../TopBar";
+import { db } from "@/lib/donation";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 
 export default function EditDonation() {
+  const router = useRouter();
+  const [hash, setHash] = useState<string | null>(null);
+
+  useEffect(() => {
+    const handleHashChange = () => {
+      setHash(window.location.hash);
+    };
+
+    window.addEventListener("hashchange", handleHashChange);
+
+    return () => {
+      window.removeEventListener("hashchange", handleHashChange);
+    };
+  }, []);
+
+  useEffect(() => {
+    // Load saved street name and city from db
+    (async () => {
+      const donation = await db.donations.get(
+        window.location.hash.substring(1)
+      );
+      if (!donation) {
+        router.replace("/");
+      }
+    })();
+  }, [router, hash]);
+
   return (
     <PageMotion>
       <Box

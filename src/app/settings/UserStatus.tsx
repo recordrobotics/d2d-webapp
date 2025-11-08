@@ -3,14 +3,19 @@ import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import CheckCircle from "@mui/icons-material/CheckCircle";
 import Cancel from "@mui/icons-material/Cancel";
+import { useFormatter } from "next-intl";
 
 export default function UserStatus({
   name,
   verified,
+  lastSyncTime,
 }: {
   name: string;
   verified: boolean;
+  lastSyncTime?: number;
 }) {
+  const format = useFormatter();
+
   return (
     <Box
       display="flex"
@@ -88,7 +93,15 @@ export default function UserStatus({
       <Typography variant="body1">
         Last sync:{" "}
         <Typography variant="body2" component="span">
-          11/5/2025 11:27 PM
+          {lastSyncTime
+            ? format.dateTime(new Date(lastSyncTime), {
+                month: "numeric",
+                day: "numeric",
+                year: "numeric",
+                hour: "numeric",
+                minute: "2-digit",
+              })
+            : "Never"}
         </Typography>
       </Typography>
     </Box>

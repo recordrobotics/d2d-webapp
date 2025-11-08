@@ -1,11 +1,27 @@
+"use client";
+
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import PageMotion from "../PageMotion";
 import TopBar from "../TopBar";
 import UserStatus from "./UserStatus";
 import LogOutButton from "./LogOutButton";
+import { useLiveQuery } from "dexie-react-hooks";
+import { db } from "@/lib/donation";
 
 export default function Settings() {
+  const userName = useLiveQuery(() => db.settings.get("user.name"), []);
+  const userVerified = useLiveQuery(() => db.settings.get("user.verified"), []);
+  const lastSyncTime = useLiveQuery(
+    () => db.settings.get("user.lastSyncTime"),
+    []
+  );
+
+  const lastSyncTimeNumber =
+    lastSyncTime && !isNaN(parseInt(lastSyncTime.value))
+      ? parseInt(lastSyncTime.value)
+      : undefined;
+
   return (
     <PageMotion>
       <Box
@@ -19,7 +35,13 @@ export default function Settings() {
         maxWidth="600px"
       >
         <TopBar>Settings</TopBar>
-        <UserStatus name="Derek" verified />
+        <UserStatus
+          name={userName ? userName.value : "<UNKNOWN>"}
+          verified={
+            userVerified && userVerified.value === "true" ? true : false
+          }
+          lastSyncTime={lastSyncTimeNumber}
+        />
         <Typography variant="caption" color="textSecondary">
           Changing your name keeps all of your donations and replaces the
           student name with your new name as soon as an internet connection is
