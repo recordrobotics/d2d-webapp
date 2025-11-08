@@ -23,7 +23,8 @@
     "react-dom": "19.2.0",
     "react-number-format": "^5.4.4",
     "dexie": "^4.2.1",
-    "dexie-react-hooks": "^4.2.0"
+    "dexie-react-hooks": "^4.2.0",
+    "react-swipeable-list": "^1.10.0"
   },
   "devDependencies": {
     "@types/node": "^20",

@@ -1,0 +1,25 @@
+.list {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+:global(.swipeable-list-item) {
+    border:1px solid #c4c4c4;
+    margin-bottom: 16px;
+    border-radius: 13px;
+}
+
+.item {
+    width: 100%;
+}
+
+:global(.swipeable-list-item):last-child {
+    margin-bottom: 0;
+}
+
+:global(.swipeable-list-item--remove) {
+    margin-bottom: 0;
+    border-width: 0;
+    transition: max-height .35s ease-out, margin-bottom .15s ease-out .25s, border-width .15s ease-out .25s !important;
+}

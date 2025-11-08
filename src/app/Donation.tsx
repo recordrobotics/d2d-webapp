@@ -5,23 +5,24 @@ import Typography from "@mui/material/Typography";
 import { Donation } from "@/lib/donation";
 import { useFormatter } from "next-intl";
 import Link from "next/link";
+import donationlistStyles from "./donationlist.module.css";
 
 export default function DonationItem({ donation }: { donation: Donation }) {
   const format = useFormatter();
   const clientTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
   return (
-    <Link href={`/donation/edit#${donation.id}`}>
+    <Link
+      href={`/donation/edit#${donation.id}`}
+      className={donationlistStyles.item}
+      draggable={false}
+    >
       <Box
         display="flex"
         flexDirection="column"
         alignItems="center"
         width="100%"
         p="5px"
-        sx={{
-          border: "1px solid #C4C4C4",
-          borderRadius: "13px",
-        }}
       >
         <Box
           display="flex"

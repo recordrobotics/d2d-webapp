@@ -1,17 +1,68 @@
 "use client";
 
 import Box from "@mui/material/Box";
-import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import Add from "@mui/icons-material/Add";
 import PageMotion from "./PageMotion";
 import Link from "next/link";
 import { useLiveQuery } from "dexie-react-hooks";
-import { db } from "@/lib/donation";
+import { db, DonationId } from "@/lib/donation";
 import DonationItem from "./Donation";
 import { getCookie } from "cookies-next";
 import { useRouter } from "next/navigation";
+import {
+  SwipeableList,
+  SwipeableListItem,
+  SwipeAction,
+  TrailingActions,
+} from "react-swipeable-list";
+import "react-swipeable-list/dist/styles.css";
+import donationlistStyles from "./donationlist.module.css";
+import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
+import { useState } from "react";
+
+function usePerItemMap<T>() {
+  const [map, setMap] = useState<Record<string, T>>({});
+  const setItem = (key: string, value: T) =>
+    setMap((m) => ({ ...m, [key]: value }));
+  return { map, setItem };
+}
+
+const trailingActions = (alignLeft: boolean, id: DonationId) => (
+  <TrailingActions>
+    <SwipeAction
+      destructive={true}
+      onClick={async () => {
+        // Delete donation
+        await db.donations.delete(id);
+      }}
+    >
+      <Box
+        bgcolor="error.main"
+        display="flex"
+        flexDirection="row"
+        p="0 20px"
+        height="100%"
+        alignItems="center"
+        justifyContent="flex-start"
+      >
+        <Box
+          flexGrow={alignLeft ? 0 : 1}
+          sx={{
+            transition: "flex-grow 0.3s",
+          }}
+        />
+        <Box display="flex" flexDirection="column" alignItems="center">
+          <DeleteForeverIcon fontSize="large" htmlColor="#fff" />
+          <Typography variant="button" color="#fff">
+            Delete
+          </Typography>
+        </Box>
+      </Box>
+    </SwipeAction>
+  </TrailingActions>
+);
 
 export default function Home() {
   const donations = useLiveQuery(
@@ -27,6 +78,9 @@ export default function Home() {
   ) {
     router.replace("/onboarding");
   }
+
+  const { map: alignLeftMap, setItem: setAlignLeftMap } =
+    usePerItemMap<boolean>();
 
   return (
     <PageMotion>
@@ -91,12 +145,26 @@ export default function Home() {
             </Button>
           </Box>
         </Box>
-        <Stack gap="16px" width="100%">
+        <SwipeableList
+          className={donationlistStyles.list}
+          destructiveCallbackDelay={350}
+          optOutMouseEvents
+        >
           {donations &&
             donations.map((donation) => (
-              <DonationItem key={donation.id} donation={donation} />
+              <SwipeableListItem
+                key={donation.id}
+                trailingActions={trailingActions(
+                  alignLeftMap[donation.id],
+                  donation.id
+                )}
+                className={donationlistStyles.listItem}
+                onSwipeProgress={(p) => setAlignLeftMap(donation.id, p >= 50)}
+              >
+                <DonationItem donation={donation} />
+              </SwipeableListItem>
             ))}
-        </Stack>
+        </SwipeableList>
       </Box>
     </PageMotion>
   );
