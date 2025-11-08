@@ -262,7 +262,27 @@ export default function DonationForm({
             });
 
             // Redirect to home page
-            router.push("/");
+            if (
+              newDonation &&
+              (await db.settings.get("autoAddDonation"))?.value === "true"
+            ) {
+              setStreetNumberValue("");
+              setDonationAmountValue("");
+              setDonorNameValue("");
+              setDonorEmailValue("");
+              setPaymentTypeValue("");
+
+              const streetNameSetting = await db.settings.get("streetName");
+              const citySetting = await db.settings.get("city");
+              if (streetNameSetting) {
+                setStreetNameValue(streetNameSetting.value);
+              }
+              if (citySetting) {
+                setCityValue(citySetting.value);
+              }
+            } else {
+              router.push("/");
+            }
           }}
         >
           {newDonation ? "Submit" : "Save"}

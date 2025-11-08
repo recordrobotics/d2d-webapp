@@ -14,11 +14,17 @@ import { getCookie } from "cookies-next";
 import { useRouter } from "next/navigation";
 
 export default function Home() {
-  const donations = useLiveQuery(() => db.donations.toArray(), []);
+  const donations = useLiveQuery(
+    () => db.donations.orderBy("timestamp").reverse().toArray(),
+    []
+  );
   const userName = useLiveQuery(() => db.settings.get("user.name"), []);
 
   const router = useRouter();
-  if (getCookie("onboardingComplete") !== "true") {
+  if (
+    typeof location === "object" &&
+    getCookie("onboardingComplete") !== "true"
+  ) {
     router.replace("/onboarding");
   }
 
