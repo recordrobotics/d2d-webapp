@@ -43,6 +43,11 @@ export default function DonationForm({
               variant="standard"
               size="medium"
               label="Street number"
+              slotProps={{
+                htmlInput: {
+                  inputMode: "numeric",
+                },
+              }}
               inputMode="numeric"
               autoComplete="off"
             />
@@ -75,6 +80,11 @@ export default function DonationForm({
           size="medium"
           placeholder="$0.00"
           inputMode="decimal"
+          slotProps={{
+            htmlInput: {
+              inputMode: "decimal",
+            },
+          }}
           autoComplete="off"
           sx={{ width: "123px" }}
         />
