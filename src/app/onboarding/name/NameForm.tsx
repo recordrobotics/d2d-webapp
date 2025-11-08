@@ -1,23 +1,18 @@
 "use client";
 
 import { useState } from "react";
-import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import ChevronRight from "@mui/icons-material/ChevronRight";
 import TextField from "@mui/material/TextField";
+import Link from "next/link";
+import NameMessage from "./NameMessage";
 
 export default function NameForm() {
   const [name, setName] = useState("");
   const isValid = name.trim().length > 0;
 
   return (
-    <Box
-      display="flex"
-      flexDirection="column"
-      gap="19px"
-      alignItems="center"
-      width="100%"
-    >
+    <>
       <TextField
         variant="standard"
         size="medium"
@@ -26,17 +21,25 @@ export default function NameForm() {
         value={name}
         onChange={(e) => setName(e.target.value)}
         autoComplete="name"
-        inputProps={{ "aria-label": "Your name" }}
+        aria-label="Your name"
       />
-      <Button
-        size="large"
-        color="primary"
-        disabled={!isValid}
-        variant="outlined"
-        endIcon={<ChevronRight />}
+      <Link
+        style={{
+          cursor: "default",
+        }}
+        href={isValid ? "/onboarding/offline" : "#"}
       >
-        Continue
-      </Button>
-    </Box>
+        <Button
+          size="large"
+          color="primary"
+          disabled={!isValid}
+          variant="outlined"
+          endIcon={<ChevronRight />}
+        >
+          Continue
+        </Button>
+      </Link>
+      <NameMessage message={isValid ? "loading" : null} />
+    </>
   );
 }

@@ -3,7 +3,11 @@ import "@fontsource/roboto/300.css";
 import "@fontsource/roboto/400.css";
 import "@fontsource/roboto/500.css";
 import "@fontsource/roboto/700.css";
+import "@fontsource/roboto/800.css";
 import "./globals.css";
+import Providers from "./providers";
+import Box from "@mui/material/Box";
+import { NextIntlClientProvider } from "next-intl";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -17,7 +21,15 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body>
+        <NextIntlClientProvider>
+          <Providers>
+            <Box display="flex" flexDirection="column" alignItems="center">
+              {children}
+            </Box>
+          </Providers>
+        </NextIntlClientProvider>
+      </body>
     </html>
   );
 }

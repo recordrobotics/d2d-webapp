@@ -1,66 +1,129 @@
-import Image from "next/image";
-import styles from "./page.module.css";
+"use client";
+
+import Box from "@mui/material/Box";
+import Stack from "@mui/material/Stack";
+import Typography from "@mui/material/Typography";
+import Button from "@mui/material/Button";
+import Add from "@mui/icons-material/Add";
+import PageMotion from "./PageMotion";
+import Link from "next/link";
+import { createUserId, Donation } from "@/lib/donation";
+import DonationItem from "./Donation";
 
 export default function Home() {
   return (
-    <div className={styles.page}>
-      <main className={styles.main}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className={styles.intro}>
-          <h1>To get started, edit the page.tsx file.</h1>
-          <p>
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className={styles.ctas}>
-          <a
-            className={styles.primary}
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+    <PageMotion>
+      <Box
+        display="flex"
+        flexDirection="column"
+        p="20px 19px"
+        alignItems="flex-end"
+        minHeight="100vh"
+        width="100vw"
+        maxWidth="600px"
+      >
+        <Link href="/settings">
+          <Button size="small" color="info" variant="text">
+            Settings
+          </Button>
+        </Link>
+        <Box
+          display="flex"
+          flexDirection="column"
+          gap="15px"
+          width="100%"
+          alignItems="center"
+          p="10px"
+        >
+          <Typography variant="h6" align="center">
+            Welcome, Derek
+            <Typography variant="body1" component="div">
+              {true
+                ? "You are currently offline. Publishing and fetching donations may not work."
+                : "You have no donations collected yet."}
+            </Typography>
+          </Typography>
+          <Typography variant="h3" align="center">
+            $234.00<Typography variant="body1">Total donated</Typography>
+          </Typography>
+          <Box
+            display="flex"
+            flexDirection="column"
+            gap="5px"
+            alignItems="center"
           >
-            <Image
-              className={styles.logo}
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className={styles.secondary}
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
-    </div>
+            <Link href="/donation/add">
+              <Button
+                size="large"
+                color="primary"
+                variant="outlined"
+                startIcon={<Add />}
+              >
+                New Donation
+              </Button>
+            </Link>
+            <Button size="small" color="info" variant="text">
+              {true ? "Publish Donations" : "Fetch Donations"}
+            </Button>
+          </Box>
+        </Box>
+        <Stack gap="16px" width="100%">
+          {(
+            [
+              {
+                id: createUserId(),
+                timestamp: new Date(
+                  "Wednesday, November 5, 3:30 PM"
+                ).getUTCMilliseconds(),
+                address: {
+                  streetNumber: 224,
+                  streetName: "Calvary Street",
+                  city: "Waltham",
+                },
+                amount: 100,
+                donor: {
+                  name: "Joseph",
+                  paymentType: "cash",
+                },
+              },
+              {
+                id: createUserId(),
+                timestamp: new Date(
+                  "Wednesday, November 5, 3:30 PM"
+                ).getUTCMilliseconds(),
+                address: {
+                  streetNumber: 224,
+                  streetName: "Calvary Street",
+                  city: "Waltham",
+                },
+                amount: 100,
+                donor: {
+                  name: "Joseph",
+                  paymentType: "cash",
+                },
+              },
+              {
+                id: createUserId(),
+                timestamp: new Date(
+                  "Wednesday, November 5, 3:30 PM"
+                ).getUTCMilliseconds(),
+                address: {
+                  streetNumber: 224,
+                  streetName: "Calvary Street",
+                  city: "Waltham",
+                },
+                amount: 100,
+                donor: {
+                  name: "Joseph",
+                  paymentType: "cash",
+                },
+              },
+            ] as Donation[]
+          ).map((donation) => (
+            <DonationItem key={donation.id} donation={donation} />
+          ))}
+        </Stack>
+      </Box>
+    </PageMotion>
   );
 }
