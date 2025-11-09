@@ -30,7 +30,7 @@ export default function NameForm() {
         label="Your name"
         fullWidth
         value={name}
-        onChange={(e) => setName(e.target.value)}
+        onChange={(e) => setName(e.target.value.trimStart())}
         autoComplete="name"
         aria-label="Your name"
       />
