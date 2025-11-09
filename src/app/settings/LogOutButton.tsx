@@ -18,6 +18,11 @@ export default function LogOutButton() {
         await db.settings.delete("onboardingComplete");
         await db.settings.delete("hasSeenAutoAddDonationOnSubmitTip");
         await db.settings.delete("hasAddedAtLeastOneDonation");
+        await db.settings.delete("donationUpdateTime");
+        await db.settings.delete("user.lastSyncedName");
+        await db.settings.delete("user.verified");
+        await db.settings.delete("user.lastSyncTime");
+        await db.settings.delete("user.lastUpdateAttemptTime");
         await db.donations.clear();
         router.push("/onboarding");
       }}

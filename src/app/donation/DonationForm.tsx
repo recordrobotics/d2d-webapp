@@ -262,6 +262,11 @@ export default function DonationForm({
               },
             });
 
+            await db.settings.put({
+              key: "donationUpdateTime",
+              value: Date.now().toString(),
+            });
+
             // Redirect to home page
             if (
               newDonation &&
@@ -297,6 +302,10 @@ export default function DonationForm({
             // Delete donation
             const id = window.location.hash.substring(1);
             await db.donations.delete(id);
+            await db.settings.put({
+              key: "donationUpdateTime",
+              value: Date.now().toString(),
+            });
             // Redirect to home page
             router.push("/");
           }
