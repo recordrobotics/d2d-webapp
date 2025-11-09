@@ -1,0 +1,15 @@
+.swipeable-list-item {
+    border:1px solid #c4c4c4;
+    margin-bottom: 16px;
+    border-radius: 13px;
+}
+
+.swipeable-list-item:last-child {
+    margin-bottom: 0;
+}
+
+.swipeable-list-item--remove {
+    border-width: 0;
+    max-height: 1000px !important;
+    transition: max-height .35s ease-out, margin-bottom .15s ease-out .25s, border-width .15s ease-out .25s !important;
+}

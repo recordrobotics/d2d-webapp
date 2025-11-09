@@ -18,6 +18,7 @@ import {
 } from "react-swipeable-list";
 import "react-swipeable-list/dist/styles.css";
 import donationlistStyles from "./donationlist.module.css";
+import "./donationlist.css";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import { useCallback, useEffect, useRef, useState } from "react";
 import DonationDeleteAlert from "./DonationDeleteAlert";
