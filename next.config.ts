@@ -50,6 +50,17 @@ const withSerwist = withSerwistInit({
     swDest: "public/sw.js",
     disable: process.env.NODE_ENV === "development",
     cacheOnNavigation: true,
+    additionalPrecacheEntries: [
+        "/",
+        "/settings",
+        "/onboarding",
+        "/onboarding/name",
+        "/onboarding/complete",
+        "/onboarding/multiple-devices",
+        "/onboarding/offline",
+        "/donation/add",
+        "/donation/edit",
+    ],
 });
 
 export default withSerwist(withNextIntl(nextConfig));
