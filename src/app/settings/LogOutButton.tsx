@@ -16,6 +16,8 @@ export default function LogOutButton() {
       startIcon={<Logout />}
       onClick={async () => {
         await db.settings.delete("onboardingComplete");
+        await db.settings.delete("hasSeenAutoAddDonationOnSubmitTip");
+        await db.settings.delete("hasAddedAtLeastOneDonation");
         await db.donations.clear();
         router.push("/onboarding");
       }}

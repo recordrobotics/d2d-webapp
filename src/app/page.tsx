@@ -22,6 +22,7 @@ import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import { useEffect, useRef, useState } from "react";
 import DonationDeleteAlert from "./DonationDeleteAlert";
 import sleep from "sleep-promise";
+import TipBanner from "./TipBanner";
 
 interface SwipeableListItemInterface {
   wrapperElement: HTMLElement;
@@ -67,6 +68,28 @@ export default function Home() {
     setDeleteAlertOpen(true);
   };
 
+  const [autoAddDonationOnSubmitTipOpen, setAutoAddDonationOnSubmitTipOpen] =
+    useState(false);
+
+  useEffect(() => {
+    (async () => {
+      const setting = await db.settings.get("autoAddDonation");
+      if (!setting || setting.value !== "true") {
+        const hasInteractedWithTip = await db.settings.get(
+          "hasSeenAutoAddDonationOnSubmitTip"
+        );
+        if (!hasInteractedWithTip || hasInteractedWithTip.value !== "true") {
+          const hasAddedDonation = await db.settings.get(
+            "hasAddedAtLeastOneDonation"
+          );
+          if (hasAddedDonation && hasAddedDonation.value === "true") {
+            setAutoAddDonationOnSubmitTipOpen(true);
+          }
+        }
+      }
+    })();
+  }, []);
+
   return (
     <PageMotion>
       <Box
@@ -83,6 +106,28 @@ export default function Home() {
             Settings
           </Button>
         </Link>
+        <TipBanner
+          open={autoAddDonationOnSubmitTipOpen}
+          closeBanner={(reason) => {
+            setAutoAddDonationOnSubmitTipOpen(false);
+
+            (async () => {
+              await db.settings.put({
+                key: "hasSeenAutoAddDonationOnSubmitTip",
+                value: "true",
+              });
+            })();
+
+            if (reason === "agree") {
+              (async () => {
+                await db.settings.put({
+                  key: "autoAddDonation",
+                  value: "true",
+                });
+              })();
+            }
+          }}
+        />
         <Box
           display="flex"
           flexDirection="column"

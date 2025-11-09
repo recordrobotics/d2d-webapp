@@ -230,6 +230,10 @@ export default function DonationForm({
                 value: streetNameValue,
               });
               await db.settings.put({ key: "city", value: cityValue });
+              await db.settings.put({
+                key: "hasAddedAtLeastOneDonation",
+                value: "true",
+              });
             }
 
             // Save donation
