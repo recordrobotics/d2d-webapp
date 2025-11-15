@@ -208,7 +208,7 @@ export default function DonationForm({
                     <TextField
                         variant="standard"
                         size="medium"
-                        label="Name"
+                        label="Name (optional)"
                         fullWidth
                         autoComplete="off"
                         value={donorNameValue}
@@ -219,7 +219,7 @@ export default function DonationForm({
                     <TextField
                         variant="standard"
                         size="medium"
-                        label="Email"
+                        label="Email (optional)"
                         fullWidth
                         autoComplete="off"
                         type="email"
