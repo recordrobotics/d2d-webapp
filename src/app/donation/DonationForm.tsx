@@ -15,6 +15,8 @@ import Button from "@mui/material/Button";
 import { db, createDonationId, DonationId } from "@/lib/donation";
 import { useRouter } from "next/navigation";
 import DonationDeleteAlert from "../DonationDeleteAlert";
+import AddCommentIcon from "@mui/icons-material/AddComment";
+import ClearIcon from "@mui/icons-material/Clear";
 
 const paymentOptions = [
     { label: "Cash", value: "cash", icon: <LocalAtmIcon fontSize="small" /> },
@@ -45,6 +47,8 @@ export default function DonationForm({
 
     const [openDeleteAlert, setOpenDeleteAlert] = useState(false);
 
+    const [noteValue, setNoteValue] = useState(null as string | null);
+
     const router = useRouter();
 
     useEffect(() => {
@@ -65,6 +69,11 @@ export default function DonationForm({
                     setDonorNameValue(donation.donor.name || "");
                     setDonorEmailValue(donation.donor.email || "");
                     setPaymentTypeValue(donation.donor.paymentType);
+                    setNoteValue(
+                        typeof donation.donor.note === "undefined"
+                            ? null
+                            : donation.donor.note
+                    );
                 }
             })();
         } else {
@@ -165,8 +174,37 @@ export default function DonationForm({
             <Section
                 title="Donor Information"
                 subtitle="Provide additional information about the donor if they are willing."
+                decorator={
+                    <Button
+                        variant="text"
+                        color={noteValue == null ? "info" : "error"}
+                        size="medium"
+                        startIcon={
+                            noteValue == null ? (
+                                <AddCommentIcon />
+                            ) : (
+                                <ClearIcon />
+                            )
+                        }
+                        onClick={() =>
+                            setNoteValue(noteValue == null ? "" : null)
+                        }
+                    >
+                        {noteValue == null ? "Add Note" : "Remove Note"}
+                    </Button>
+                }
             >
                 <Box display="flex" flexDirection="column" gap="5px">
+                    {noteValue != null ? (
+                        <TextField
+                            label="Additional Comments"
+                            multiline
+                            margin="dense"
+                            fullWidth
+                            value={noteValue}
+                            onChange={(e) => setNoteValue(e.target.value)}
+                        />
+                    ) : null}
                     <TextField
                         variant="standard"
                         size="medium"
@@ -289,6 +327,7 @@ export default function DonationForm({
                                     | "cash"
                                     | "check"
                                     | "paypal",
+                                note: noteValue || undefined,
                             },
                         });
 
@@ -308,6 +347,7 @@ export default function DonationForm({
                             setDonorNameValue("");
                             setDonorEmailValue("");
                             setPaymentTypeValue("");
+                            setNoteValue(null);
 
                             const streetNameSetting = await db.settings.get(
                                 "streetName"

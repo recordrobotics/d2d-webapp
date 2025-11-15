@@ -27,6 +27,7 @@ export interface DonationData {
     donorName: string;
     donorEmail: string;
     paymentType: string;
+    note: string;
 }
 
 export interface UserUpdateData {
@@ -48,6 +49,7 @@ if (!sheet) {
             "donorName",
             "donorEmail",
             "paymentType",
+            "note",
         ],
     });
     console.log("Created new sheet: donations");

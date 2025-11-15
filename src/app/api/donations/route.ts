@@ -117,6 +117,7 @@ export async function POST(request: Request) {
                         name: row.get("donorName") || undefined,
                         email: row.get("donorEmail") || undefined,
                         paymentType: row.get("paymentType") || "",
+                        note: row.get("note") || undefined,
                     },
                 })),
         });
@@ -173,6 +174,7 @@ export async function POST(request: Request) {
             donorName: donation.donor.name || "",
             donorEmail: donation.donor.email || "",
             paymentType: donation.donor.paymentType,
+            note: donation.donor.note || "",
         });
     }
 
